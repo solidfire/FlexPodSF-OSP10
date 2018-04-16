@@ -1,0 +1,39 @@
+# This template configures each role to use a pair of bonded nics (nic2 and
+# nic3) and configures an IP address on each relevant isolated network
+# for each role. This template assumes use of network-isolation.yaml.
+#
+# FIXME: if/when we add functionality to heatclient to include heat
+# environment files we should think about using it here to automatically
+# include network-isolation.yaml.
+resource_registry:
+  OS::TripleO::Compute::Net::SoftwareConfig: /home/stack/sierra/FlexPodSF-OSP10/nic-configs/compute.yaml
+  OS::TripleO::Controller::Net::SoftwareConfig: /home/stack/sierra/FlexPodSF-OSP10/nic-configs/controller.yaml
+
+parameter_defaults:
+  InternalApiNetCidr: 10.1.30.0/24
+  StorageNetCidr: 10.1.40.0/24
+  StorageMgmtNetCidr: 10.1.50.0/24 
+  ExternalNetCidr: 192.168.91.0/24
+# CIDR subnet mask length for provisioning network
+  ControlPlaneSubnetCidr: '24'
+  InternalApiAllocationPools:  [{'start': '10.1.30.10', 'end': '10.1.30.50'}]
+  StorageAllocationPools:  [{'start': '10.1.40.10', 'end': '10.1.40.50'}]
+  ExternalAllocationPools: [{'start': '192.168.91.110', 'end': '192.168.91.150'}]
+  StorageMgmtAllocationPools: [{'start':'10.1.50.10', 'end': '10.1.50.50'}]
+  ExternalInterfaceDefaultRoute: 192.168.91.253
+  ControlPlaneDefaultRoute: 10.1.20.2
+  EC2MetadataIp: 10.1.20.2
+  DnsServers: ["8.8.8.8","8.8.4.4"]
+  ExternalNetworkVlanID: 901
+  InternalApiNetworkVlanID: 30
+  StorageNetworkVlanID: 40
+  StorageManagementVlanId: 50
+  #TenantNetworkVlanID: 70
+  NeutronNetworkType: vlan
+  NeutronTunnelTypes: ''
+  NeutronBridgeMappings: "datacentre:br-ex,physnet-tenant:br-tenant"
+  NeutronNetworkVLANRanges: "physnet-tenant:650:750,datacentre:901:902" 
+  # This sets 'external_network_bridge' in l3_agent.ini to an empty string
+  # so that external networks act like provider bridge networks (they
+  # will plug into br-int instead of br-ex)
+  NeutronExternalNetworkBridge: "''"
