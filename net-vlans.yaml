@@ -6,8 +6,8 @@
 # environment files we should think about using it here to automatically
 # include network-isolation.yaml.
 resource_registry:
-  OS::TripleO::Compute::Net::SoftwareConfig: /home/stack/sierra/FlexPodSF-OSP10/nic-configs/compute.yaml
-  OS::TripleO::Controller::Net::SoftwareConfig: /home/stack/sierra/FlexPodSF-OSP10/nic-configs/controller.yaml
+  OS::TripleO::Compute::Net::SoftwareConfig: /home/stack/FlexPodSF-OSP10/nic-configs/compute.yaml
+  OS::TripleO::Controller::Net::SoftwareConfig: /home/stack/FlexPodSF-OSP10/nic-configs/controller.yaml
 
 parameter_defaults:
   InternalApiNetCidr: 10.1.30.0/24
